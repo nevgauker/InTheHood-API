@@ -8,7 +8,7 @@ var multer = require('multer');
 
 var fs = require('fs');
 
-
+const CONNECTION_URL = process.env.MONGODB_URI || 'mongodb://localhost/inTheHood';
 
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -39,7 +39,7 @@ var checkAuth = require('./check-auth');
 const jwt_key = "secret";
 
 
-var db = mongoose.connect('mongodb://localhost/inTheHood');
+var db = mongoose.connect(CONNECTION_URL);
 
 
 var Item = require('./model/item');
