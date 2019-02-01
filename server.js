@@ -10,6 +10,8 @@ var fs = require('fs');
 
 const CONNECTION_URL = process.env.MONGODB_URI || 'mongodb://localhost/inTheHood';
 
+const PORT = process.env.PORT || 3004; 
+
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
         cb(null, './uploads/');
@@ -457,6 +459,6 @@ app.get('/categories', function(request, response) {
 });
 
 
-app.listen(3004, function() {
-    console.log("In The Hood API running on port 3004...");
+app.listen(PORT, function() {
+    console.log("In The Hood API running on port $(PORT)...");
 });
