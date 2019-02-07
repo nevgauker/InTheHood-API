@@ -13,7 +13,8 @@ var user = new Schema({
     userAvatar:String,
     phone:String,
     isWhatsapp:Number,
-    facebook:String
+    facebook:String,
+    pushToken:String
 });
 
 module.exports = mongoose.model('User',user);

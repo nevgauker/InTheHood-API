@@ -10,6 +10,8 @@ const categoriesRoutes = require('./api/routes/categories');
 
 const fs = require('fs');
 
+const pushNotifications = require('node-pushnotifications');
+
 
 const CONNECTION_URL = process.env.MONGODB_URI || 'mongodb://localhost/inTheHood';
 
@@ -32,6 +34,20 @@ if (!fs.existsSync(itemsImagesDir)){
     fs.mkdirSync(itemsImagesDir);
 }
 
+
+
+const settings = {
+      apn: {
+        token: {
+            key: './certs/AuthKey_NP9P5CB9SH.p8', // optionally: fs.readFileSync('./certs/key.p8')
+            keyId: 'ABCD',
+            teamId: 'EFGH',
+        },
+        production: false 
+    }
+
+};
+const push = new pushNotifications(settings);
 
 
 app.use(morgan("dev"));

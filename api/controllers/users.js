@@ -148,7 +148,8 @@ exports.updateUserById = (request, response, next) => {
                 let phone = request.body.phone;
                 let isWhatsapp = request.body.isWhatsapp;
                 let facebook = request.body.facebook;
-                
+                let pushToken = request.body.pushToken;
+
                 if (name!=null) {
                     user.name = name;
                 }
@@ -161,15 +162,15 @@ exports.updateUserById = (request, response, next) => {
                 if (isWhatsapp!=null) {
                     user.isWhatsapp = isWhatsapp;
                 }
-                  if (facebook!=null) {
+                if (facebook!=null) {
                     user.facebook = facebook;
                 }
-                
                 if ( request.file != null) {
                     user.userAvatar = request.file.path;
                 }
-
-
+                if (pushToken!=null) {
+                    user.pushToken = pushToken;
+                }
                 user.save(function(err, savedUser) {
                     if (err) {
                         response.status(500).send({error:err});
