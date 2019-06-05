@@ -68,6 +68,8 @@ exports.signup = (request, response, next) => {
                         user.name = request.body.name;
                         user.email = request.body.email;
                         user.password = hash;
+                        user.userAvatar = request.file.path;
+                
                         user.save(function(saveError, savedUser) {
                             if (err) {
                                 response.status(500).send({error:'Auth failed'});

@@ -32,17 +32,21 @@ const upload = multer({ storage: storage,
 
 
 
-
+//sign in and out
 router.post('/user/signin', UsersController.signin);
 router.post('/user/signout', UsersController.signout);
-router.post('/user/signup', UsersController.signup);
 
+//create user
+router.post('/user/signup', upload.single('userAvatar'), UsersController.signup);
+//update user
+router.patch('/user/:id', checkAuth, upload.single('userAvatar'), UsersController.updateUserById);
+
+//fetch users
 router.post('/user/me', checkAuth, UsersController.myUser);
 router.get('/', checkAuth, UsersController.getUsers);
 router.get('/user/:id', checkAuth,UsersController.userById);
 
-router.patch('/user/:id', checkAuth, upload.single('userAvatar'), UsersController.updateUserById);
-
+//delete user
 router.delete('/user', checkAuth, UsersController.deleteUser);
 
 
