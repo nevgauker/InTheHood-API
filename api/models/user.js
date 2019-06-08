@@ -14,7 +14,8 @@ var user = new Schema({
     phone:String,
     isWhatsapp:Number,
     facebook:String,
-    pushToken:String
+    pushToken:String,
+    isAdmin:Boolean
 });
 
 module.exports = mongoose.model('User',user);

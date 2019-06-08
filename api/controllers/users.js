@@ -69,6 +69,7 @@ exports.signup = (request, response, next) => {
                         user.email = request.body.email;
                         user.password = hash;
                         user.userAvatar = request.file.path;
+                        user.isAdmin = false;
                 
                         user.save(function(saveError, savedUser) {
                             if (err) {

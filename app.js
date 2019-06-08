@@ -37,7 +37,7 @@ if (!fs.existsSync(itemsImagesDir)){
 
 
 const settings = {
-      apn: {
+    apn: {
         token: {
             key: './certs/AuthKey_NP9P5CB9SH.p8', // optionally: fs.readFileSync('./certs/key.p8')
             keyId: 'ABCD',
@@ -86,45 +86,42 @@ app.get('/uploads/users/:file', function (req, res){
 });
 
 
-
-
-//app.use((req, res, next) => {
-//  res.header("Access-Control-Allow-Origin", "*");
-//  res.header(
-//    "Access-Control-Allow-Headers",
-//    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-//  );
-//  if (req.method === "OPTIONS") {
-//    res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
-//    return res.status(200).json({});
-//  }
-//  next();
-//});
-
-
 // Routes which should handle requests
 app.use("/users", usersRoutes);
 app.use("/items", itemsRoutes);
 app.use("/categories", categoriesRoutes);
 
 
-//app.use((req, res, next) => {
-//    
-// 
-//    
-//  const error = new Error("Not found");
-//  error.status = 404;
-//  next(error);
-//});
-//
-//app.use((error, req, res, next) => {
-//  res.status(error.status || 500);
-//  res.json({
-//    error: {
-//      message: error.message
-//    }
-//  });
-//});
+//create default admin if needed
+const User = require("./api/models/user");
+var bcrypt = require('bcrypt');
+User.findOne({ email:"nevgauker@gmail.com"},function(err, user) {
+    if (user) {
+        console.log("admin user already exist")
+    }else {
+        bcrypt.hash("123456", 10,(hashError, hash) => {
+            if (hashError) {
+                console.log("error creating admin");
+            }else {
+                var user = new User();
+                user.name = "Admin";
+                user.email = "nevgauker@gmail.com"
+                user.password = hash;
+                user.isAdmin = true;
+                user.save(function(saveError, savedUser) {
+                    if (err) {
+                        console.log("error creating admin");
+                    } else {
+                        console.log("Admin user was created");
+                    }
+                });
+            }
+        });
+    }
+
+});
+
+
 
 module.exports = app;
 
