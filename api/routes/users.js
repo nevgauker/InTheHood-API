@@ -34,6 +34,8 @@ const upload = multer({ storage: storage,
 
 //sign in and out
 router.post('/user/signin', UsersController.signin);
+router.post('/user/signinAdmin', UsersController.signinAdmin);
+
 router.post('/user/signout', UsersController.signout);
 
 //create user

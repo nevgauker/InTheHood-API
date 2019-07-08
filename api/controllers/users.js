@@ -40,6 +40,45 @@ exports.signin = (request, response, next) => {
 
 };
 
+exports.signinAdmin = (request, response, next) => {
+
+    User.findOne({ email:request.body.email },function(err, user) {
+        if (user) {
+            bcrypt.compare(request.body.password,user.password,(err, result) => {
+                if (err) {
+                    response.status(401).send({error:'Auth failed'});
+                }
+                if (result) {
+
+                    if  (user.isAdmin == true) {
+                        const token = jwt.sign( {
+                            email: user.email,
+                            userId: user._id
+                        },jwt_key, { expiresIn: "24h" });
+                        response.status(200).send({message: 'Auth successful',
+                                                   token: token,
+                                                   user: user });
+                    }else {
+                        response.status(401).send({error:'Auth failed'});
+                    }
+
+                }else {
+                    response.status(401).send({error:'Auth failed'});
+                }
+            });
+
+
+        }else {
+            response.status(401).send({error:'Auth failed'});
+        }
+
+    });
+
+
+
+};
+
+
 
 exports.signout =  (request, response, next) => {
     response.status(200).send({ message: 'Sign out successful' });
@@ -70,7 +109,7 @@ exports.signup = (request, response, next) => {
                         user.password = hash;
                         user.userAvatar = request.file.path;
                         user.isAdmin = false;
-                
+
                         user.save(function(saveError, savedUser) {
                             if (err) {
                                 response.status(500).send({error:'Auth failed'});
