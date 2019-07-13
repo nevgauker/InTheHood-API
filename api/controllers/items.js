@@ -39,9 +39,8 @@ exports.addItem = (request, response, next) => {
         location: {  type: "Point", coordinates: [request.body.longitude, request.body.latitude]},
         type: request.body.type, 
         category: request.body.category,    
-        comments: request.body.comments          
-
-
+        comments: request.body.comments,
+        barterFor: request.body.barterFor
     });
 
     item.save(function(err, savedItem) {

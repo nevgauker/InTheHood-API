@@ -79,7 +79,7 @@ app.get('/uploads/items/:file', function (req, res){
 
 app.get('/uploads/users/:file', function (req, res){
     file = req.params.file;
-    var img = fs.readFileSync(__dirname + "/bla/" + file);
+    var img = fs.readFileSync(__dirname + "/uploads/users/" + file);
     res.writeHead(200, {'Content-Type': 'image/jpeg' });
     res.end(img, 'binary');
 

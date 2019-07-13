@@ -25,7 +25,8 @@ var item = new Schema({
     wantIds:[String],
     type:String,
     category:String,
-    comments:String
+    comments:String,
+    barterFor:String
 });
 
 module.exports = mongoose.model('Item',item);
