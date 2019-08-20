@@ -29,4 +29,8 @@ var item = new Schema({
     barterFor:String
 });
 
+
+ item.index({ location : "2dsphere" });
+
+
 module.exports = mongoose.model('Item',item);

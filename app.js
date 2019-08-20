@@ -34,8 +34,6 @@ if (!fs.existsSync(itemsImagesDir)){
     fs.mkdirSync(itemsImagesDir);
 }
 
-
-
 const settings = {
     apn: {
         token: {

@@ -36,7 +36,7 @@ router.delete('/item', checkAuth, ItemsController.deleteItem);
 router.post('/item/add', checkAuth, upload.single('itemImage'), ItemsController.addItem);
 
 //update one item
-router.patch('/item/:id', checkAuth,upload.single('itemImage'), ItemsController.addItem);
+router.patch('/item/:id', checkAuth,upload.single('itemImage'), ItemsController.updateItem);
 
 //fetch all items
 router.post('/', checkAuth, ItemsController.fetchItemsByDistance);

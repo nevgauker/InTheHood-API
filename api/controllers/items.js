@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
 const Item = require("../models/item");
 
-
-
 exports.deleteItem = (request, response, next) => {
 
     Item.findOne({_id :request.body.id},function(err, item) {
@@ -83,10 +81,10 @@ exports.updateItem = (request, response, next) => {
                     item.title = title;
                 }
                 if (price!=null) {
-                    item.email = price;
+                    item.price = price;
                 }
                 if (canBargin!=null) {
-                    item.phone = canBargin;
+                    item.canBargin = canBargin;
                 }
                 if (currency!=null) {
                     item.currency = currency;
@@ -138,39 +136,38 @@ exports.fetchItemsByDistance = (request, response, next) => {
 
     const location = request.body.location;
     var distance = request.body.distance;
+    
+    var params = {};
 
-
-    if (distance > 0) {
-         //km to meters
+    if (request.body.type && request.body.type != "All"){
+        params.type = request.body.type;
+    }
+    if (request.body.category && request.body.category != "All"){
+        params.category = request.body.category;
+    }
+    
+    if (distance > 0){
         distance = distance * 1000;
-        Item.find( { "location": {
+
+        params.location = {
             $near: {   $geometry: {  type: "Point",
                                    coordinates: [location.longitude, location.latitude] },
                     $maxDistance: distance
 
                    }
-        } }, function(err, items) {
-            if (err) {
-                response.status(500).send({error: err});
-            } else {
-                response.send({items : items,
-                               message: 'Fetching items successful'
-                              });
-            }
-        });
-
-    }else {
-        Item.find({}, function(err, items) {
-            if (err) {
-                response.status(500).send({error: err});
-            } else {
-                response.send({items : items,
-                               message: 'Fetching items successful'
-                              });
-            }
-        });
-
+        };
+        
     }
+    
+    Item.find(params, function(err, items) {
+            if (err) {
+                response.status(500).send({error: err});
+            } else {
+                response.send({items : items,
+                               message: 'Fetching items successful'
+                              });
+            }
+        });
 };
 
 
