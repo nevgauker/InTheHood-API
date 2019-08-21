@@ -42,8 +42,6 @@ router.patch('/item/:id', checkAuth,upload.single('itemImage'), ItemsController.
 router.post('/', checkAuth, ItemsController.fetchItemsByDistance);
 
 
-  
-
 module.exports = router;
 
 

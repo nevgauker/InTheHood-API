@@ -1,6 +1,9 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+const Message = require("./message");
+
+
 var item = new Schema({    
     ownerId:{ type: String, required: true },
     title:{ type: String, required: true },
@@ -26,7 +29,7 @@ var item = new Schema({
     type:String,
     category:String,
     comments:String,
-    barterFor:String
+    barterFor:String,
 });
 
 

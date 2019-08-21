@@ -7,6 +7,9 @@ const mongoose = require("mongoose");
 const itemsRoutes = require("./api/routes/items");
 const usersRoutes = require('./api/routes/users');
 const categoriesRoutes = require('./api/routes/categories');
+const messagesRoutes = require('./api/routes/messages');
+
+
 
 const fs = require('fs');
 
@@ -88,6 +91,7 @@ app.get('/uploads/users/:file', function (req, res){
 app.use("/users", usersRoutes);
 app.use("/items", itemsRoutes);
 app.use("/categories", categoriesRoutes);
+app.use("/messages", messagesRoutes);
 
 
 //create default admin if needed
