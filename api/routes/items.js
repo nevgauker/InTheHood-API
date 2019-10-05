@@ -30,7 +30,7 @@ const upload = multer({ storage: storage,
 
 
 //delete on item
-router.delete('/item', checkAuth, ItemsController.deleteItem);
+router.delete('/item/:id', checkAuth, ItemsController.deleteItem);
 
 //add one item
 router.post('/item/add', checkAuth, upload.single('itemImage'), ItemsController.addItem);

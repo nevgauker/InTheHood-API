@@ -2,25 +2,31 @@ const mongoose = require("mongoose");
 const Item = require("../models/item");
 
 exports.deleteItem = (request, response, next) => {
+    
+    
+    const _id = request.params.id;
+    
 
-    Item.findOne({_id :request.body.id},function(err, item) {
+    Item.findOne({ _id : _id },function(err, item) {
         if (err) {
-            response.status(500).send({error: "Item doesnt exist"});
+            response.status(500).send({ error: "Item doesnt exist" });
         } else {
             if (item) {
-                Item.remove({_id :request.body.id},function(err) {
+                Item.remove({ _id :_id },function(err) {
                     if (err) {
-                        response.status(500).send({error: "Error deleting an item"});
+                        response.status(500).send({ error: "Error deleting an item" });
                     }else {
-                        response.status(200).send({error: "Item was deleted"});
+                        response.status(200).send({ message: "Item was deleted" });
                     }   
                 });
             }else {
-                response.status(500).send({error: "Problem with item object"});
+                response.status(500).send({ error: "Problem with item object" });
             }
         }
     });
 };
+  
+                 
 
 
 
