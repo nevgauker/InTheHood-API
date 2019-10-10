@@ -10,6 +10,8 @@ const categoriesRoutes = require('./api/routes/categories');
 //const messagesRoutes = require('./api/routes/messages');
 
 const chatsRoutes = require('./api/routes/chats');
+const pushManager = require('./api/pushManager');
+
 
 
 const fs = require('fs');
@@ -19,7 +21,7 @@ const pushNotifications = require('node-pushnotifications');
 
 const CONNECTION_URL = process.env.MONGODB_URI || 'mongodb://localhost/inTheHood';
 
-var db = mongoose.connect(CONNECTION_URL);
+var db = mongoose.connect(CONNECTION_URL,{ useNewUrlParser: true });
 
 
 const uploadsDir = './uploads';
@@ -37,20 +39,6 @@ if (!fs.existsSync(usersImagesDir)){
 if (!fs.existsSync(itemsImagesDir)){
     fs.mkdirSync(itemsImagesDir);
 }
-
-const settings = {
-    apn: {
-        token: {
-            key: './certs/AuthKey_NP9P5CB9SH.p8', // optionally: fs.readFileSync('./certs/key.p8')
-            keyId: 'ABCD',
-            teamId: 'EFGH',
-        },
-        production: false 
-    }
-
-};
-const push = new pushNotifications(settings);
-
 
 app.use(morgan("dev"));
 app.use(bodyParser.json());

@@ -133,6 +133,33 @@ exports.signup = (request, response, next) => {
 
 //User
 
+exports.setMyUserPushToken = (request, response, next) => {
+
+    User.findOne({email :request.body.email}, function(err, user) {
+        if (err) {
+            response.status(500).send({error: "Could not fetch user"});
+        } else {
+            if (user) {
+                
+                user.pushToken = request.body.pushToken;
+                
+                
+                user.save(function(saveError, savedUser) {
+                            if (err) {
+                                response.status(500).send({error: "Could not update user"}); 
+                            } else {
+                                 response.status(200).send({user : user,
+                                           message: 'Update user token successful'
+                                          });
+                            }
+                });            
+            }else {
+                response.status(500).send({error: "Could not fetch user"}); 
+            }
+        }
+    });            
+};
+
 exports.myUser = (request, response, next) => {
 
     User.findOne({email :request.body.email}, function(err, user) {

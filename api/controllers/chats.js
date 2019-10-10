@@ -1,8 +1,12 @@
 const mongoose = require("mongoose");
 
 const Chat = require("../models/chat");
+const User = require("../models/user");
+
 
 const Message = require("../models/message");
+
+const pushManager = require('../pushManager')
 
 
 exports.fecthChat = (request, response, next) => {
@@ -67,6 +71,8 @@ exports.addMessageToChat = (request, response, next) => {
         //chat id
         const _id = request.params.id;
     
+         
+    
      Chat.findById(_id, function(err, chat){
         if (err) {
             response.status(500).send({error: err});
@@ -77,11 +83,20 @@ exports.addMessageToChat = (request, response, next) => {
             var message = {"text" : request.body.text, "userId" : userId };
            // chat.messages.push(message);
             chat.messages.unshift(message);
-
             chat.save(function(err, savedChat) {
                 if (err) {
                     response.status(500).send({ error:err });
                 } else {
+                    var _id = chat.itemOwnerId;
+                    if (userId == chat.itemOwnerId){
+                        _id = chat.otherUserId;
+                    }
+                     User.findById(_id, function(err, user){
+                         if (err){ 
+                         }else {
+                             pushManager.pushMessageForChat(user.pushToken,text);
+                         } 
+                     });
                     response.send({ chat : savedChat, 
                                  message: 'Updating chat successful' });
                 }

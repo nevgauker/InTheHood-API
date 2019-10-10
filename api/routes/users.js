@@ -45,6 +45,9 @@ router.patch('/user/:id', checkAuth, upload.single('userAvatar'), UsersControlle
 
 //fetch users
 router.post('/user/me', checkAuth, UsersController.myUser);
+//update push token for my user
+router.post('/user/me/push', checkAuth, UsersController.setMyUserPushToken);
+
 router.get('/', checkAuth, UsersController.getUsers);
 router.get('/user/:id', checkAuth,UsersController.userById);
 

@@ -54,16 +54,16 @@
 //    
 //};
 //
-exports.createMessage = (ownerId, itemId, text) => {
-    
-       var message = new Message({
-        ownerId: request.body.ownerId,
-        itemId: request.body.itemId,
-        text: request.body.text,
-    });
-    
-    return message;
-               
-};
+//exports.createMessage = (ownerId, itemId, text) => {
+//    
+//       var message = new Message({
+//        ownerId: request.body.ownerId,
+//        itemId: request.body.itemId,
+//        text: request.body.text,
+//    });
+//    
+//    return message;
+//               
+//};
 //
 //
