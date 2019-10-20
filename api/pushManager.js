@@ -83,12 +83,8 @@ exports.pushMessageForChat = (registrationIds,text) => {
 
     push.send(registrationIds, data, (err, result) => {
     if (err) {
-                console.log('aaaa');
-
         console.log(err);
     } else {
-                        console.log('bbb');
-
         console.log(result);
     }
 });
