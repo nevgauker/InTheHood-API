@@ -12,7 +12,14 @@ exports.signin = (request, response, next) => {
 
     User.findOne({ email:request.body.email },function(err, user) {
         if (user) {
-            bcrypt.compare(request.body.password,user.password,(err, result) => {
+            
+            const facebookToken = request.body.facebookToken;
+            const googleToken = request.body.googleToken;
+
+
+            if  (facebookToken == null && googleToken == null) {
+                //normal
+                bcrypt.compare(request.body.password,user.password,(err, result) => {
                 if (err) {
                     response.status(401).send({error:'Auth failed'});
                 }
@@ -27,9 +34,18 @@ exports.signin = (request, response, next) => {
                 }else {
                     response.status(401).send({error:'Auth failed'});
                 }
-            });
-
-
+            }); 
+            }else {
+                //using facebook or google
+                //in the future , maybe validate facebook/google token
+                    const token = jwt.sign( {
+                        email: user.email,
+                        userId: user._id
+                    },jwt_key, { expiresIn: "24h" });
+                    response.status(200).send({message: 'Auth successful',
+                                               token: token,
+                                               user: user });
+            }
         }else {
             response.status(401).send({error:'Auth failed'});
         }
@@ -107,7 +123,7 @@ exports.signup = (request, response, next) => {
                         user.name = request.body.name;
                         user.email = request.body.email;
                         user.password = hash;
-                        user.userAvatar = request.file.path;
+                        user.userAvatar = request.file.url;
                         user.isAdmin = false;
 
                         user.save(function(saveError, savedUser) {

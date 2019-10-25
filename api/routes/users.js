@@ -1,19 +1,38 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const checkAuth = require('../middleware/check-auth');
+const cloudinary = require('cloudinary');
+const cloudinaryStorage = require('multer-storage-cloudinary');
 
+const checkAuth = require('../middleware/check-auth');
 const UsersController = require('../controllers/users');
 
-const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, './uploads/users/');
-    },
-    filename: function(req, file, cb) {
-        cb(null, new Date().toISOString() + file.originalname);
-    }
+const isDev = true;
+
+cloudinary.config({ 
+  cloud_name: 'hfsa3zfdr', 
+  api_key: '683453437659749', 
+  api_secret: 'JQr62WaaM8KEAPeTp6bk1upK7zI' 
 });
 
+var dev_storage = cloudinaryStorage({
+  cloudinary: cloudinary,
+  folder: 'development/uploads/users',
+  allowedFormats: ['jpg', 'png'],
+  filename: function (req, file, cb) {
+    cb(null, new Date().toISOString() + file.originalname);
+  }
+});
+var prod_storage = cloudinaryStorage({
+  cloudinary: cloudinary,
+  folder: 'production/uploads/users',
+  allowedFormats: ['jpg', 'png'],
+  filename: function (req, file, cb) {
+    cb(null, new Date().toISOString() + file.originalname);
+  }
+});
+ 
+ 
 const fileFilter = (req, file, cb) => {
     if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
         cb(null, true);
@@ -22,14 +41,15 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
-const upload = multer({ storage: storage,
+const upload_dev = multer({ storage: dev_storage,
                      limits: { fileSize: 1024 * 1024 * 5 },
                      fileFilter: fileFilter
                     });
 
-
-
-
+const upload_prod = multer({ storage: prod_storage,
+                     limits: { fileSize: 1024 * 1024 * 5 },
+                     fileFilter: fileFilter
+                    });
 
 
 //sign in and out
@@ -39,9 +59,16 @@ router.post('/user/signinAdmin', UsersController.signinAdmin);
 router.post('/user/signout', UsersController.signout);
 
 //create user
-router.post('/user/signup', upload.single('userAvatar'), UsersController.signup);
-//update user
-router.patch('/user/:id', checkAuth, upload.single('userAvatar'), UsersController.updateUserById);
+ if (isDev) {
+     router.post('/user/signup', upload_dev.single('userAvatar'), UsersController.signup);
+     //update user
+     router.patch('/user/:id', checkAuth, upload_dev.single('userAvatar'), UsersController.updateUserById);
+ }else {
+     router.post('/user/signup', upload_prod.single('userAvatar'), UsersController.signup);
+     //update user
+     router.patch('/user/:id', checkAuth, upload_prod.single('userAvatar'), UsersController.updateUserById);
+ }
+
 
 //fetch users
 router.post('/user/me', checkAuth, UsersController.myUser);

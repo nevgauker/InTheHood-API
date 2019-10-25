@@ -26,28 +26,30 @@ var db = mongoose.connect(CONNECTION_URL,{ useNewUrlParser: true });
 
 const uploadsDir = './uploads';
 
-const usersImagesDir = './uploads/users';
-const itemsImagesDir = './uploads/items';
 
-if (!fs.existsSync(uploadsDir)){
-    fs.mkdirSync(uploadsDir);
-}
+//update switch to cloud storage
+//const usersImagesDir = './uploads/users';
+//const itemsImagesDir = './uploads/items';
 
-if (!fs.existsSync(usersImagesDir)){
-    fs.mkdirSync(usersImagesDir);
-}
-if (!fs.existsSync(itemsImagesDir)){
-    fs.mkdirSync(itemsImagesDir);
-}
+//if (!fs.existsSync(uploadsDir)){
+//    fs.mkdirSync(uploadsDir);
+//}
+//
+//if (!fs.existsSync(usersImagesDir)){
+//    fs.mkdirSync(usersImagesDir);
+//}
+//if (!fs.existsSync(itemsImagesDir)){
+//    fs.mkdirSync(itemsImagesDir);
+//}
 
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 //app.use('uploads/users', express.static('uploads/users'));
 
-app.use('bla', express.static('bla'));
+//app.use('bla', express.static('bla'));
 
-app.use('uploads', express.static('uploads'));
+//app.use('uploads', express.static('uploads'));
 
 
 
@@ -98,7 +100,7 @@ User.findOne({ email:"nevgauker@gmail.com"},function(err, user) {
             }else {
                 var user = new User();
                 user.name = "Admin";
-                user.email = "nevgauker@gmail.com"
+                user.email = "nevgauker2@gmail.com"
                 user.password = hash;
                 user.isAdmin = true;
                 user.save(function(saveError, savedUser) {
