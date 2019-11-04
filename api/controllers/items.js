@@ -36,7 +36,7 @@ exports.addItem = (request, response, next) => {
         title: request.body.title,
         price: request.body.price,
         ownerId: request.body.ownerId,
-        itemImage:  request.file.path,
+        itemImage: request.file.url,
         canBargin:  request.body.canBargin,
         currency: request.body.currency,
         locationName: request.body.locationName,
